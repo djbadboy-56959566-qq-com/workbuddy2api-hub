@@ -27,25 +27,28 @@ jobs:
       # 否则打开 http://127.0.0.1:8788/ 会没有看板。
       # 用 --onedir 不用 --onefile：--onefile 会把 accounts/usage
       # 写到临时解压目录，退出就丢，账号和用量都存不住。
+      # 你仓库里图标在 icon/ 文件夹里，不在根目录，
+      # 所以这里用 icon/icon.ico，不是 icon.ico
+      # exe 名字就是 WorkBuddy-多账号批量签到.exe
       - name: Build exe with PyInstaller
-        run: pyinstaller --noconfirm --clean --onedir --console --name wb-proxy --add-data "dashboard.html;." wb_proxy.py
+        run: pyinstaller --noconfirm --clean --onedir --console --name "WorkBuddy-多账号批量签到" --icon icon/icon.ico --add-data "dashboard.html;." wb_proxy.py
 
       - name: Check output
         run: |
-          dir dist\wb-proxy
-          dist\wb-proxy\wb-proxy.exe --help
+          dir "dist\WorkBuddy-多账号批量签到"
+          "dist\WorkBuddy-多账号批量签到\WorkBuddy-多账号批量签到.exe" --help
 
       - name: Zip package
-        run: Compress-Archive -Path dist\wb-proxy -DestinationPath wb-proxy-windows.zip
+        run: Compress-Archive -Path "dist\WorkBuddy-多账号批量签到" -DestinationPath "WorkBuddy-多账号批量签到-windows.zip"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: wb-proxy-windows
-          path: wb-proxy-windows.zip
+          name: WorkBuddy-多账号批量签到-windows
+          path: WorkBuddy-多账号批量签到-windows.zip
 
       - name: Upload to Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: wb-proxy-windows.zip
+          files: WorkBuddy-多账号批量签到-windows.zip
