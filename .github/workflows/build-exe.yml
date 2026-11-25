@@ -33,10 +33,12 @@ jobs:
       - name: Build exe with PyInstaller
         run: pyinstaller --noconfirm --clean --onedir --console --name "WorkBuddy-多账号批量签到" --icon icon/icon.ico --add-data "dashboard.html;." wb_proxy.py
 
+      # PowerShell 里带引号的 exe 路径前面必须加 &，不然
+      # "....exe" --help 会被当成表达式，报 Unexpected token 'help'
       - name: Check output
         run: |
           dir "dist\WorkBuddy-多账号批量签到"
-          "dist\WorkBuddy-多账号批量签到\WorkBuddy-多账号批量签到.exe" --help
+          & "dist\WorkBuddy-多账号批量签到\WorkBuddy-多账号批量签到.exe" --help
 
       - name: Zip package
         run: Compress-Archive -Path "dist\WorkBuddy-多账号批量签到" -DestinationPath "WorkBuddy-多账号批量签到-windows.zip"
